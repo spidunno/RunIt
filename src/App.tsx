@@ -5,7 +5,7 @@ import defaultContent from './defaultScript.ts?raw';
 import * as Babel from '@babel/standalone';
 import { importDeclaration } from "@babel/types";
 import workerHeader from './workerHeader.js?raw';
-import { Console } from "console-feed";
+import { Console, Decode } from "console-feed";
 import { Message } from "console-feed/lib/definitions/Console";
 
 Babel.registerPlugin('esmshifier', {
@@ -52,12 +52,15 @@ export default function App() {
       const blobUrl = URL.createObjectURL(new Blob([`${workerHeader}\n${transformed.code}`], { type: 'text/javascript' }));
       const worker = new Worker(blobUrl, { type: 'module' });
       worker.onmessage = (ev) => {
-        const message: Message = ev.data;
+        const messageRaw: Message = ev.data;
+        console.log(messageRaw);
+        const message: Message = Decode(messageRaw);
+
         setLogs((currLogs) => [...currLogs, message]);
       }
       worker.onerror = (ev) => {
         ev.preventDefault();
-        // setLogs((currLogs) => [...currLogs, ]);
+        setLogs((currLogs) => [...currLogs, {method: 'error', data: [ev.error]}]);
       }
       return () => {
         worker.terminate();
