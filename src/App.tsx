@@ -7,6 +7,7 @@ import { importDeclaration } from "@babel/types";
 import workerHeader from './workerHeader.js?raw';
 import { Console, Decode } from "console-feed";
 import { Message } from "console-feed/lib/definitions/Console";
+import { useDebounceCallback } from "usehooks-ts";
 
 Babel.registerPlugin('esmshifier', {
   visitor: {
@@ -44,7 +45,7 @@ export default function App() {
   //   // };
   // }, [transformedCode]);
 
-  useEffect(() => {
+  useEffect(useDebounceCallback(() => {
     setLogs([]);
     try {
       const transformed = Babel.transform(currentCode, { presets: ['typescript'], filename: '/index.ts', plugins: ['esmshifier'] });
@@ -68,7 +69,7 @@ export default function App() {
     } catch(e) {
 
     }
-  }, [currentCode]);
+  }, 100, {leading: true}), [currentCode]);
 
   return (
     <div style={{ width: '100vw', height: '100vh', display: 'flex', flexDirection: 'row' }}>

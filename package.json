@@ -18,7 +18,8 @@
     "console-feed": "^3.6.0",
     "monaco-editor": "^0.50.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "usehooks-ts": "^3.1.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
