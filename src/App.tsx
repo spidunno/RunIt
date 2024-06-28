@@ -5,7 +5,7 @@ import defaultContent from './defaultScript.ts?raw';
 import * as Babel from '@babel/standalone';
 import { importDeclaration } from "@babel/types";
 import workerHeader from './workerHeader.js?raw';
-import { Console, Decode } from "console-feed";
+import { Console, Decode, Hook } from "console-feed";
 import { Message } from "console-feed/lib/definitions/Console";
 import { useDebounceCallback } from "usehooks-ts";
 
@@ -53,15 +53,15 @@ export default function App() {
       const blobUrl = URL.createObjectURL(new Blob([`${workerHeader}\n${transformed.code}`], { type: 'text/javascript' }));
       const worker = new Worker(blobUrl, { type: 'module' });
       worker.onmessage = (ev) => {
-        const messageRaw: Message = ev.data;
-        console.log(messageRaw);
-        const message: Message = Decode(messageRaw);
+        console.log(ev.data);
+          const message: Message = Decode(ev.data);
+          console.log(message);
 
-        setLogs((currLogs) => [...currLogs, message]);
+          setLogs((currLogs) => [...currLogs, message]);
       }
       worker.onerror = (ev) => {
         ev.preventDefault();
-        setLogs((currLogs) => [...currLogs, {method: 'error', data: [ev.error]}]);
+        // setLogs((currLogs) => [...currLogs, {method: 'error', data: [ev.error]}]);
       }
       return () => {
         worker.terminate();
