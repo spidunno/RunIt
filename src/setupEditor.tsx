@@ -50,8 +50,10 @@ export const setupEditor: React.ComponentProps<typeof Editor>['onMount'] = (
     // jsx: JsxEmit.React,
 		// target: monaco.languages.typescript.ScriptTarget.ES2015,
     esModuleInterop: true,
+    module: monaco.languages.typescript.ModuleKind.ESNext,
+    // module: monaco.languages.typescript.ModuleKind.ES2015,
 		// noEmit: true,
-    target: monaco.languages.typescript.ScriptTarget.ES5,
+    target: monaco.languages.typescript.ScriptTarget.ES2017,
 		noLib: true,
 		// moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
 		// typeRoots: ["node_modules/@types"]
