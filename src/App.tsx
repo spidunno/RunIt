@@ -106,7 +106,7 @@ export default function App() {
         }}
       />
       <div style={{ height: '100vh', maxHeight: '100vh', overflowY: 'scroll', width: '50vw', background: 'rgb(30, 30, 30)', borderLeft: '1px solid #2c2c2c' }}>
-        <Console variant="dark" logs={logs} styles={{"BASE_BACKGROUND_COLOR": 'rgb(30, 30, 30)'}}/>
+        <Console variant="dark" logs={logs} styles={{"BASE_BACKGROUND_COLOR": 'rgb(30, 30, 30)', 'OBJECT_VALUE_STRING_COLOR': 'rgb(206, 145, 120)', "OBJECT_VALUE_REGEXP_COLOR": 'rgb(180, 102, 149)', 'OBJECT_VALUE_FUNCTION_PREFIX_COLOR': 'rgb(86, 156, 214)', 'OBJECT_NAME_COLOR': '#c586c0', 'BASE_COLOR': 'rgb(212, 212, 212)', 'LOG_COLOR': 'rgb(212, 212, 212)'}}/>
       </div>
     </div>
   );

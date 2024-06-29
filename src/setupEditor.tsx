@@ -1,9 +1,9 @@
 import { Editor } from '@monaco-editor/react';
-import { JsxEmit } from 'typescript';
 import defaultContent from './defaultScript.ts?raw';
 import React, { useEffect, useState } from 'react';
 import { createATA } from './ata';
 import workerLib from './workerlib.d.ts?raw';
+import es6lib from './es6lib.d.ts?raw';
 
 export const typeHelper = createATA();
 
@@ -35,7 +35,7 @@ export function useProgress() {
   return { progress, total, finished };
 }
 
-export const setupEditor: NonNullable<React.ComponentProps<typeof Editor>['onMount']> = (
+export const setupEditor: React.ComponentProps<typeof Editor>['onMount'] = (
   editor,
   monaco
 ) => {
@@ -50,15 +50,17 @@ export const setupEditor: NonNullable<React.ComponentProps<typeof Editor>['onMou
     // jsx: JsxEmit.React,
 		// target: monaco.languages.typescript.ScriptTarget.ES2015,
     esModuleInterop: true,
-		noEmit: true,
+		// noEmit: true,
+    target: monaco.languages.typescript.ScriptTarget.ES5,
 		noLib: true,
 		// moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
 		// typeRoots: ["node_modules/@types"]
-		lib: ['webworker']
-  });
-
-	editor.updateOptions({detectIndentation: false, insertSpaces: false, tabSize: 2})
+		lib: ['es6', 'webworker'],
+	});
+editor.updateOptions({detectIndentation: false, insertSpaces: false, tabSize: 2})
 	defaults.addExtraLib(workerLib, 'lib.webworker.symbol.d.ts');
+	defaults.addExtraLib(es6lib, 'lib.es6.symbol.d.ts');
+
   const addLibraryToRuntime = (code: string, _path: string) => {
     const path = 'file://' + _path;
     defaults.addExtraLib(code, path);

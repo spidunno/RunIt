@@ -9182,8 +9182,8 @@ declare function close(): void;
 *
 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/DedicatedWorkerGlobalScope/postMessage)
 */
-declare function postMessage(message: any, transfer: Transferable[]): void;
-declare function postMessage(message: any, options?: StructuredSerializeOptions): void;
+// declare function postMessage(message: any, transfer: Transferable[]): void;
+// declare function postMessage(message: any, options?: StructuredSerializeOptions): void;
 /**
 * Dispatches a synthetic event event to target and returns true if either event's cancelable attribute value is false or its preventDefault() method was not invoked, and false otherwise.
 *
