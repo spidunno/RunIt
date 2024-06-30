@@ -5,7 +5,7 @@ import defaultContent from './defaultScript.ts?raw';
 import * as Babel from '@babel/standalone';
 import { importDeclaration } from "@babel/types";
 import workerHeader from './workerHeader.js?raw';
-import { Console, Decode, Hook } from "console-feed";
+import { Console, Decode } from "console-feed";
 import { Message } from "console-feed/lib/definitions/Console";
 import { useDebounceCallback } from "usehooks-ts";
 
@@ -92,12 +92,12 @@ export default function App() {
         onMount={(...args) => {
           setupEditor(...args);
           setCurrentCode(defaultContent);
-          try {
-            const transfomed = Babel.transform(defaultContent, { presets: ['typescript'], filename: '/index.ts', plugins: ['esmshifier'] });
-            // setTransformedCode(transfomed.code || '');
-          } catch(e) {
+          // try {
+          //   // const transfomed = Babel.transform(defaultContent, { presets: ['typescript'], filename: '/index.ts', plugins: ['esmshifier'] });
+          //   // setTransformedCode(transfomed.code || '');
+          // } catch(e) {
       
-          }
+          // }
         }}
         options={{
           lineNumbers: 'off',
