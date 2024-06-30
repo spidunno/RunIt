@@ -19,6 +19,9 @@ Babel.registerPlugin('esmshifier', {
           specifiers.node.source.value = `https://esm.sh/${val}`;
         }
       }
+
+      // stupid stupid stupid stupid stupid stupid stupid stupid stupid stupid stupid stupid stupid stupid stupid stupid stupid stupid stupid stupid
+      source;
     }
   }
 } as { visitor: { ImportDeclaration: typeof importDeclaration } });
@@ -26,7 +29,7 @@ Babel.registerPlugin('esmshifier', {
 export default function App() {
   const [ logs, setLogs ] = useState<Message[]>([]);
   const [currentCode, setCurrentCode] = useState('');
-  const [ transformedCode, setTransformedCode ] = useState('');
+  // const [ transformedCode, setTransformedCode ] = useState('');
 
   // useEffect(() => {
   //   // setLogs([]);
@@ -49,7 +52,7 @@ export default function App() {
     setLogs([]);
     try {
       const transformed = Babel.transform(currentCode, { presets: ['typescript'], filename: '/index.ts', plugins: ['esmshifier'] });
-      setTransformedCode(transformed.code || '');
+      // setTransformedCode(transformed.code || '');
       const blobUrl = URL.createObjectURL(new Blob([`${workerHeader}\n${transformed.code}`], { type: 'text/javascript' }));
       const worker = new Worker(blobUrl, { type: 'module' });
       worker.onmessage = (ev) => {
@@ -91,7 +94,7 @@ export default function App() {
           setCurrentCode(defaultContent);
           try {
             const transfomed = Babel.transform(defaultContent, { presets: ['typescript'], filename: '/index.ts', plugins: ['esmshifier'] });
-            setTransformedCode(transfomed.code || '');
+            // setTransformedCode(transfomed.code || '');
           } catch(e) {
       
           }
@@ -106,7 +109,10 @@ export default function App() {
         }}
       />
       <div style={{ height: '100vh', maxHeight: '100vh', overflowY: 'scroll', width: '50vw', background: 'rgb(30, 30, 30)', borderLeft: '1px solid #2c2c2c' }}>
-        <Console variant="dark" logs={logs} styles={{"BASE_BACKGROUND_COLOR": 'rgb(30, 30, 30)', 'OBJECT_VALUE_STRING_COLOR': 'rgb(206, 145, 120)', "OBJECT_VALUE_REGEXP_COLOR": 'rgb(180, 102, 149)', 'OBJECT_VALUE_FUNCTION_PREFIX_COLOR': 'rgb(86, 156, 214)', 'OBJECT_NAME_COLOR': '#c586c0', 'BASE_COLOR': 'rgb(212, 212, 212)', 'LOG_COLOR': 'rgb(212, 212, 212)'}}/>
+        <Console variant="dark" 
+        // @ts-expect-error
+        logs={logs}
+        styles={{"BASE_BACKGROUND_COLOR": 'rgb(30, 30, 30)', 'OBJECT_VALUE_STRING_COLOR': 'rgb(206, 145, 120)', "OBJECT_VALUE_REGEXP_COLOR": 'rgb(180, 102, 149)', 'OBJECT_VALUE_FUNCTION_PREFIX_COLOR': 'rgb(86, 156, 214)', 'OBJECT_NAME_COLOR': '#c586c0', 'BASE_COLOR': 'rgb(212, 212, 212)', 'LOG_COLOR': 'rgb(212, 212, 212)'}}/>
       </div>
     </div>
   );

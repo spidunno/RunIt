@@ -35,7 +35,7 @@ export function useProgress() {
   return { progress, total, finished };
 }
 
-export const setupEditor: React.ComponentProps<typeof Editor>['onMount'] = (
+export const setupEditor: NonNullable<React.ComponentProps<typeof Editor>['onMount']> = (
   editor,
   monaco
 ) => {
@@ -53,9 +53,9 @@ export const setupEditor: React.ComponentProps<typeof Editor>['onMount'] = (
     module: monaco.languages.typescript.ModuleKind.ESNext,
     // module: monaco.languages.typescript.ModuleKind.ES2015,
 		// noEmit: true,
-    target: monaco.languages.typescript.ScriptTarget.ES2017,
+    // target: monaco.languages.typescript.ScriptTarget.ES2017,
 		noLib: true,
-		// moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
+		moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
 		// typeRoots: ["node_modules/@types"]
 		lib: ['es6', 'webworker'],
 	});
