@@ -58,9 +58,9 @@ export default function App() {
       worker.onmessage = (ev) => {
         console.log(ev.data);
           const message: Message = Decode(ev.data);
-          console.log(message);
-
-          setLogs((currLogs) => [...currLogs, message]);
+          // console.log(message);
+          if (message.method === 'clear') setLogs([]);
+          else setLogs((currLogs) => [...currLogs, message]);
       }
       worker.onerror = (ev) => {
         ev.preventDefault();
