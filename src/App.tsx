@@ -162,7 +162,7 @@ export default function App() {
         <Console variant="dark"
           // @ts-expect-error
           logs={logs}
-          styles={{"BASE_BACKGROUND_COLOR": 'rgb(30, 30, 30)', 'OBJECT_VALUE_STRING_COLOR': 'rgb(206, 145, 120)', "OBJECT_VALUE_REGEXP_COLOR": 'rgb(180, 102, 149)', 'OBJECT_VALUE_FUNCTION_PREFIX_COLOR': 'rgb(86, 156, 214)', 'OBJECT_NAME_COLOR': '#c586c0', 'BASE_COLOR': 'rgb(212, 212, 212)', 'LOG_COLOR': 'rgb(212, 212, 212)', OBJECT_VALUE_UNDEFINED_COLOR: '#a1a1a1'}}/>
+          styles={{"BASE_BACKGROUND_COLOR": 'rgb(30, 30, 30)', 'OBJECT_VALUE_STRING_COLOR': 'rgb(206, 145, 120)', "OBJECT_VALUE_REGEXP_COLOR": 'rgb(180, 102, 149)', 'OBJECT_VALUE_FUNCTION_PREFIX_COLOR': 'rgb(86, 156, 214)', 'OBJECT_NAME_COLOR': '#c586c0', 'BASE_COLOR': 'rgb(212, 212, 212)', 'LOG_COLOR': 'rgb(212, 212, 212)', OBJECT_VALUE_UNDEFINED_COLOR: '#a1a1a1', OBJECT_VALUE_NUMBER_COLOR: 'rgb(181, 206, 168)'}}/>
       </div>
     </div>
   );
