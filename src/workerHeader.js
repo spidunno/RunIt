@@ -4,5 +4,6 @@ for (const key of Object.keys(console)) {
 	}
 }
 (await import("https://esm.sh/console-feed")).Hook(console,postMessage.bind(this));
-onerror=console.error;
+onerror=(ev, source, lineno, colno, error) => {console.error(error); return false};
+globalThis.onunhandledrejection=ev=>{ev.preventDefault();console.error(ev.reason);return false};
 delete globalThis.postMessage;

@@ -2,8 +2,6 @@ import { Editor } from '@monaco-editor/react';
 import defaultContent from './defaultScript.ts?raw';
 import React, { useEffect, useState } from 'react';
 import { createATA } from './ata';
-import workerLib from './workerlib.d.ts?raw';
-import es6lib from './es6lib.d.ts?raw';
 
 export const typeHelper = createATA();
 
@@ -53,16 +51,15 @@ export const setupEditor: NonNullable<React.ComponentProps<typeof Editor>['onMou
     module: monaco.languages.typescript.ModuleKind.ESNext,
     // module: monaco.languages.typescript.ModuleKind.ES2015,
 		// noEmit: true,
-    // target: monaco.languages.typescript.ScriptTarget.ES2017,
+    target: monaco.languages.typescript.ScriptTarget.ES2017,
 		noLib: true,
 		moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
 		// typeRoots: ["node_modules/@types"]
 		lib: ['es6', 'webworker'],
 	});
 editor.updateOptions({detectIndentation: false, insertSpaces: false, tabSize: 2})
-	defaults.addExtraLib(workerLib, 'lib.webworker.symbol.d.ts');
-	defaults.addExtraLib(es6lib, 'lib.es6.symbol.d.ts');
-
+	// defaults.addExtraLib(workerLib, 'lib.webworker.symbol.d.ts');
+	// defaults.addExtraLib(es6lib, 'lib.es6.symbol.d.ts');
   const addLibraryToRuntime = (code: string, _path: string) => {
     const path = 'file://' + _path;
     defaults.addExtraLib(code, path);
@@ -72,6 +69,9 @@ editor.updateOptions({detectIndentation: false, insertSpaces: false, tabSize: 2}
       // monaco.editor.createModel(code, 'javascript', uri);
     // }
   };
+  import('./libs.json').then(async ({default: libs}) => {
+    for (const lib of libs) addLibraryToRuntime(await (await fetch(`/RunIt/libs/${lib}`)).text(), `/libs/${lib}`)
+  });
 
   typeHelper.addListener('receivedFile', addLibraryToRuntime);
 

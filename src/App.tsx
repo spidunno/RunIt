@@ -8,6 +8,34 @@ import workerHeader from './workerHeader.js?raw';
 import { Console, Decode } from "console-feed";
 import { Message } from "console-feed/lib/definitions/Console";
 import { useDebounceCallback } from "usehooks-ts";
+import ansi, { parse } from "ansicolor";
+
+console.log(parse('test'));
+ansi.rgb = {
+
+  black:        [0,     0,   0],    
+  darkGray:     [128, 128, 128],
+  lightGray:    [212, 212, 212],
+  white:        [255, 255, 255],
+
+  red:          [237, 78, 76],
+  lightRed:     [242, 139, 130],
+  
+  green:        [1, 200, 1],
+  lightGreen:   [161, 247, 181],
+  
+  yellow:       [210, 192, 87],
+  lightYellow:  [221, 251, 85],
+  
+  blue:         [39, 116, 240],
+  lightBlue:    [102, 157, 246],
+  
+  magenta:      [161, 66, 244],
+  lightMagenta: [214, 112, 214],
+  
+  cyan:         [18, 181, 203],
+  lightCyan:    [132, 240, 255],
+}
 
 Babel.registerPlugin('esmshifier', {
   visitor: {
@@ -67,15 +95,26 @@ export default function App() {
         }
         else {
           const message: Message = Decode(ev.data);
+          const newMessageData = message.data ? message.data.flatMap(v => {
+            if (typeof v === 'string') {
+              const parsed = parse(v).asChromeConsoleLogArguments;
+              if (parsed.length === 2 && parsed[1] === "") return [v];
+              else return parsed;
+            } else {
+              return [v];
+            }
+          }) : message.data;
+          message.data = newMessageData;
+          // if (newMessageData) {for (const i in newMessageData) {
+          //   const msg = newMessageData[i];
+          //   if (typeof msg === 'string') newMessageData.splice(parseInt(i), 1, ...parse(msg).asChromeConsoleLogArguments);
+          // }}
           // console.log(message);
           if (message.data?.length === 0) message.data[0] = undefined;
           setLogs((currLogs) => [...currLogs, message]);
         }
       }
-      worker.onerror = (ev) => {
-        ev.preventDefault();
-        // setLogs((currLogs) => [...currLogs, {method: 'error', data: [ev.error]}]);
-      }
+      worker.onerror = () => false
       return () => {
         worker.terminate();
       }
@@ -87,7 +126,6 @@ export default function App() {
   return (
     <div style={{ width: '100vw', height: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Editor
-        
         value={defaultContent}
         className="editor"
         language="typescript"
