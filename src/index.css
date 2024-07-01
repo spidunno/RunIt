@@ -7,3 +7,84 @@
   background-color: rgb(30, 30, 30);
   /* overflow: hidden; */
 }
+
+.console-container {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 6px;
+  padding-right: 6px;
+  
+  max-width: 100%;
+  height: 50%;
+  max-height: 50%;
+
+  overflow-y: auto;
+
+  /* scrollbar-gutter: stable; */
+  
+  background: rgb(30, 30, 30);
+  border-top: 1px solid #2c2c2c;
+  --error-bg: #472525;
+  --warn-bg: #423800;
+  --log-bg: rgb(42, 42, 42);
+  --info-bg: #253147;
+}
+
+.console-container > div {
+  display: flex;
+  flex-direction: column;
+  row-gap: 4px;
+}
+
+.console-container > div > div {
+  border: none;
+  border-radius: 6px;
+  padding: 4px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.console-container > div > div[data-method="log"], .console-container > div > div[data-method="dir"] {
+  background-color: var(--log-bg);
+}
+.console-container > div > div[data-method="log"] > div:nth-child(3) > div[data-type="object"] div, .console-container > div > div[data-method="log"] > div:nth-child(3) > div[data-type="object"] ol, .console-container > div > div[data-method="dir"] > div:nth-child(3) > div[data-type="object"] div, .console-container > div > div[data-method="dir"] > div:nth-child(3) > div[data-type="object"] ol {
+  background-color: var(--log-bg);
+}
+
+.console-container > div > div[data-method="error"] {
+  background-color: var(--error-bg);
+}
+.console-container > div > div[data-method="error"] > div:nth-child(3) > div[data-type="object"] div, .console-container > div > div[data-method="error"] > div:nth-child(3) > div[data-type="object"] ol {
+  background-color: var(--error-bg);
+}
+
+.console-container > div > div[data-method="warn"] {
+  background-color: var(--warn-bg);
+}
+.console-container > div > div[data-method="warn"] > div:nth-child(3) > div[data-type="object"] div, .console-container > div > div[data-method="warn"] > div:not(:nth-child(1)) > div[data-type="object"] ol {
+  background-color: var(--warn-bg);
+}
+
+.console-container > div > div[data-method="debug"] {
+  background-color: var(--info-bg);
+  color: #abc7ff;
+}
+.console-container > div > div[data-method="debug"] > div:nth-child(3) > div[data-type="object"] div, .console-container > div > div[data-method="debug"] > div:nth-child(3) > div[data-type="object"] ol {
+  background-color: var(--info-bg);
+}
+
+.console-container > div > div:not([data-method="log"]) > div:nth-child(1) {
+  padding-left: 4px;
+}
+
+.console-container > div > div:not([data-method="log"]) > div:nth-child(3) {
+  margin-left: 8px;
+}
+
+.console-container > div > div[data-method="log"] > div:nth-child(3) {
+  margin-left: 2px;
+}
+
+.console-container > div > div > div:nth-child(3) > div[data-type="string"] {
+  margin-right: -0.5em;
+}
