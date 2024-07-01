@@ -56,11 +56,22 @@ export default function App() {
       const blobUrl = URL.createObjectURL(new Blob([`${workerHeader}\n${transformed.code}`], { type: 'text/javascript' }));
       const worker = new Worker(blobUrl, { type: 'module' });
       worker.onmessage = (ev) => {
-        console.log(ev.data);
+        if (ev.data[0].method === 'clear') {
+          const message: Message = {
+            data: [
+              "%cConsole was cleared",
+              "font-style: italic; color: rgb(127, 127, 127);"
+            ],
+            method: 'log'
+          };
+          setLogs([message]);
+        }
+        else {
           const message: Message = Decode(ev.data);
           // console.log(message);
-          if (message.method === 'clear') setLogs([]);
-          else setLogs((currLogs) => [...currLogs, message]);
+          if (message.data?.length === 0) message.data[0] = undefined;
+          setLogs((currLogs) => [...currLogs, message]);
+        }
       }
       worker.onerror = (ev) => {
         ev.preventDefault();
@@ -75,7 +86,7 @@ export default function App() {
   }, 100, {leading: true}), [currentCode]);
 
   return (
-    <div style={{ width: '100vw', height: '100vh', display: 'flex', flexDirection: 'row' }}>
+    <div style={{ width: '100vw', height: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Editor
         
         value={defaultContent}
@@ -83,8 +94,8 @@ export default function App() {
         language="typescript"
         defaultPath="index.ts"
         path="index.ts"
-        height="100vh"
-        width='50vw'
+        height="50vh"
+        width='100vw'
         theme="vs-dark"
         onChange={(value) => {
           setCurrentCode(value ? value : '');
@@ -108,11 +119,11 @@ export default function App() {
           renderLineHighlightOnlyWhenFocus: true,
         }}
       />
-      <div style={{ height: '100vh', maxHeight: '100vh', overflowY: 'scroll', width: '50vw', background: 'rgb(30, 30, 30)', borderLeft: '1px solid #2c2c2c' }}>
+      <div style={{ height: '50vh', maxHeight: '50vh', overflowY: 'scroll', width: '100vw', background: 'rgb(30, 30, 30)', borderTop: '1px solid #2c2c2c' }}>
         <Console variant="dark" 
-        // @ts-expect-error
-        logs={logs}
-        styles={{"BASE_BACKGROUND_COLOR": 'rgb(30, 30, 30)', 'OBJECT_VALUE_STRING_COLOR': 'rgb(206, 145, 120)', "OBJECT_VALUE_REGEXP_COLOR": 'rgb(180, 102, 149)', 'OBJECT_VALUE_FUNCTION_PREFIX_COLOR': 'rgb(86, 156, 214)', 'OBJECT_NAME_COLOR': '#c586c0', 'BASE_COLOR': 'rgb(212, 212, 212)', 'LOG_COLOR': 'rgb(212, 212, 212)'}}/>
+          // @ts-expect-error
+          logs={logs}
+          styles={{"BASE_BACKGROUND_COLOR": 'rgb(30, 30, 30)', 'OBJECT_VALUE_STRING_COLOR': 'rgb(206, 145, 120)', "OBJECT_VALUE_REGEXP_COLOR": 'rgb(180, 102, 149)', 'OBJECT_VALUE_FUNCTION_PREFIX_COLOR': 'rgb(86, 156, 214)', 'OBJECT_NAME_COLOR': '#c586c0', 'BASE_COLOR': 'rgb(212, 212, 212)', 'LOG_COLOR': 'rgb(212, 212, 212)', OBJECT_VALUE_UNDEFINED_COLOR: '#a1a1a1'}}/>
       </div>
     </div>
   );
