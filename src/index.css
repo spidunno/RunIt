@@ -40,8 +40,14 @@
   border: none;
   border-radius: 6px;
   padding: 4px;
+  padding-top: 6px;
+  padding-bottom: 6px;
   margin-top: 0;
   margin-bottom: 0;
+}
+.console-container > div > div > div:nth-child(3) * {
+  font-family: 'Fira Mono', 'Courier New', Courier, monospace;
+  /* font-size: 14px; */
 }
 
 .console-container > div > div[data-method="log"], .console-container > div > div[data-method="dir"] {

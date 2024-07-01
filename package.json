@@ -12,6 +12,10 @@
   "dependencies": {
     "@babel/standalone": "^7.24.7",
     "@babel/types": "^7.24.7",
+    "@fontsource/fira-code": "^5.0.18",
+    "@fontsource/fira-mono": "^5.0.13",
+    "@fontsource/jetbrains-mono": "^5.0.20",
+    "@fontsource/roboto-mono": "^5.0.18",
     "@monaco-editor/react": "^4.6.0",
     "@types/babel__standalone": "^7.1.7",
     "@typescript/ata": "^0.9.6",

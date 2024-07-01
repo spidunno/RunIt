@@ -148,6 +148,8 @@ export default function App() {
           // }
         }}
         options={{
+          fontFamily: 'Fira Code',
+          fontLigatures: true,
           lineNumbers: 'off',
           minimap: { enabled: false },
           scrollbar: { horizontal: 'hidden', vertical: 'hidden' },
