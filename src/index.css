@@ -36,7 +36,7 @@
   row-gap: 4px;
 }
 
-.console-container > div > div {
+.console-container > div > div:not([data-method="log"]) {
   border: none;
   border-radius: 6px;
   padding: 4px;
@@ -51,11 +51,46 @@
 }
 
 .console-container > div > div[data-method="log"], .console-container > div > div[data-method="dir"] {
-  background-color: var(--log-bg);
+  /* background-color: var(--log-bg); */
+  /* border: 1px solid #3b3b3b; */
+  /* border: none; */
+  border-color: #3b3b3b;
+  position: relative;
+  /* margin-bottom: -4px; */
+  margin-left: 26px;
+  margin-right: 26px;
 }
-.console-container > div > div[data-method="log"] > div:nth-child(3) > div[data-type="object"] div, .console-container > div > div[data-method="log"] > div:nth-child(3) > div[data-type="object"] ol, .console-container > div > div[data-method="dir"] > div:nth-child(3) > div[data-type="object"] div, .console-container > div > div[data-method="dir"] > div:nth-child(3) > div[data-type="object"] ol {
-  background-color: var(--log-bg);
+
+.console-container > div > div[data-method="log"] > div:nth-child(1), .console-container > div > div[data-method="dir"] > div:nth-child(1) {
+  left: -28px;
+  position: absolute;
 }
+
+.console-container > div > div:not([data-method="log"]) > div:nth-child(1), .console-container > div > div:not([data-method="dir"]) > div:nth-child(1) {
+  width: 17.33px;
+}
+.console-container > div > div[data-method="error"] > div:nth-child(1) > span > div:not(:empty) {
+  /* width: 16px; */
+  color: var(--error-bg);
+  background-color: #ff8080;
+}
+.console-container > div > div[data-method="warn"] > div:nth-child(1) > span > div:not(:empty) {
+  /* width: 16px; */
+  color: var(--warn-bg);
+  background-color: rgb(255, 220, 158);
+}
+
+.console-container > div > div[data-method="log"]:has(+ div), .console-container > div > div[data-method="dir"] + .console-container > div > div:not([data-method="dir"]) {
+  /* background-color: red !important; */
+  border-bottom: none;
+}
+
+.console-container > div > div:not([data-method="log"]) + div[data-method="log"] {
+  border-top: none;
+}
+/* .console-container > div > div[data-method="log"] > div:nth-child(3) > div[data-type="object"] div, .console-container > div > div[data-method="log"] > div:nth-child(3) > div[data-type="object"] ol, .console-container > div > div[data-method="dir"] > div:nth-child(3) > div[data-type="object"] div, .console-container > div > div[data-method="dir"] > div:nth-child(3) > div[data-type="object"] ol { */
+  /* background-color: var(--log-bg); */
+/* } */
 
 .console-container > div > div[data-method="error"] {
   background-color: var(--error-bg);
@@ -88,7 +123,7 @@
 }
 
 .console-container > div > div[data-method="log"] > div:nth-child(3) {
-  margin-left: 2px;
+  margin-left: 3px;
 }
 
 .console-container > div > div > div:nth-child(3) > div[data-type="string"] {
