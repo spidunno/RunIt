@@ -112,6 +112,9 @@
 .console-container > div > div:not([data-method="log"]) + div[data-method="log"] {
   border-top: none;
 }
+.console-container > div > div[data-method="log"]:nth-child(1) {
+  border-top: none;
+}
 /* .console-container > div > div[data-method="log"] > div:nth-child(3) > div[data-type="object"] div, .console-container > div > div[data-method="log"] > div:nth-child(3) > div[data-type="object"] ol, .console-container > div > div[data-method="dir"] > div:nth-child(3) > div[data-type="object"] div, .console-container > div > div[data-method="dir"] > div:nth-child(3) > div[data-type="object"] ol { */
   /* background-color: var(--log-bg); */
 /* } */
