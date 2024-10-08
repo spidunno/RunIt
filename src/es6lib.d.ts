@@ -6808,3 +6808,5 @@ interface SetConstructor {
 interface ArrayBufferConstructor {
   readonly [Symbol.species]: ArrayBufferConstructor;
 }
+
+declare function prompt(message:? string, _default?: string): string;

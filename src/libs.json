@@ -1,4 +1,5 @@
 [
+    "custom.d.ts",
     "lib.decorators.d.ts",
     "lib.decorators.legacy.d.ts",
     "lib.es2015.collection.d.ts",

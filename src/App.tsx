@@ -9,6 +9,7 @@ import { Console, Decode } from "console-feed";
 import { Message } from "console-feed/lib/definitions/Console";
 import { useDebounceCallback } from "usehooks-ts";
 import ansi, { parse } from "ansicolor";
+import { RawSourceMap, SourceMapConsumer } from "source-map-js";
 
 console.log(parse('test'));
 ansi.rgb = {
@@ -79,11 +80,39 @@ export default function App() {
   useEffect(useDebounceCallback(() => {
     setLogs([]);
     try {
-      const transformed = Babel.transform(currentCode, { presets: ['typescript'], filename: '/index.ts', plugins: ['esmshifier'] });
+      const transformed = Babel.transform(currentCode, { sourceMaps: true, presets: ['typescript'], filename: '/index.ts', plugins: ['esmshifier'] });
+      // console.log(transformed);
+      const smc = new SourceMapConsumer(transformed.map as unknown as RawSourceMap);
+      // console.log(smc);
       const blobUrl = URL.createObjectURL(new Blob([`${workerHeader}\n${transformed.code}`], { type: 'text/javascript' }));
       const worker = new Worker(blobUrl, { type: 'module' });
       worker.onmessage = (ev) => {
-        if (ev.data[0].method === 'clear') {
+        if (ev.data[0].method === 'prompt') {
+          const data = ev.data[0];
+          const sab: SharedArrayBuffer = data.data[0];
+          const ia = new Int32Array(sab);
+          const ua = new Uint8Array(sab);
+          const message: string | undefined = data.data[1];
+          const defaultMessage: string | undefined  = data.data[2];
+          const te = new TextEncoder();
+          
+          setLogs((currLogs) => [...currLogs, {method: 'command', data: Array(currLogs.length % 2), timestamp: <><div style={{color: 'rgb(212, 212, 212)'}} data-type="string">{message}</div><input defaultValue={defaultMessage} onKeyUp={ev => {
+            if (ev.key === 'Enter') {
+              // const encoded = te.encode(prompt(message, defaultMessage) || '');
+              const encoded = te.encode(ev.currentTarget.value);
+              ev.currentTarget.disabled = true;
+              sab.grow(8 + encoded.byteLength);
+    
+              for (let i in encoded) {
+                Atomics.store(ua, parseInt(i) + 8, encoded[i]);
+              }
+              Atomics.store(ia, 0, 1);
+              Atomics.notify(ia, 0);
+            }
+          }}/></> as unknown as string}]);
+        }
+        // console.log(ev.data);
+        else if (ev.data[0].method === 'clear') {
           const message: Message = {
             data: [
               "%cConsole was cleared",
@@ -95,6 +124,20 @@ export default function App() {
         }
         else {
           const message: Message = Decode(ev.data);
+          if (message.method === 'error' && message.data && typeof message.data[0] === 'string') {
+            const match = message.data[0].match(/(http|https):\/\/.+\/.+:([0-9]+):([0-9]+)/);
+            if (match) {
+              
+              const [ columnString, lineString ] = match.slice(-2);
+              const [ column, line ] = [columnString, lineString].map(v => parseInt(v));
+              // console.log(line - 1, column);
+              // console.log(transformed.code);
+              const orig = smc.originalPositionFor({line: line, column: column});
+              // console.log(orig);
+
+              message.data[0] = message.data[0].replaceAll(`${columnString}:${lineString}`, `${orig.column}:${orig.line}`);
+            }
+          };
           const newMessageData = message.data ? message.data.flatMap(v => {
             if (typeof v === 'string') {
               const parsed = parse(v).asChromeConsoleLogArguments;
@@ -162,6 +205,9 @@ export default function App() {
         <Console variant="dark"
           // @ts-expect-error
           logs={logs}
+          // filter={[]}
+          // searchKeywords="."
+          // logFilter={(log) => {log.timestamp = <input/>;console.log(log);return true}}
           styles={{"BASE_BACKGROUND_COLOR": 'rgb(30, 30, 30)', 'OBJECT_VALUE_STRING_COLOR': 'rgb(206, 145, 120)', "OBJECT_VALUE_REGEXP_COLOR": 'rgb(180, 102, 149)', 'OBJECT_VALUE_FUNCTION_PREFIX_COLOR': 'rgb(86, 156, 214)', 'OBJECT_NAME_COLOR': '#c586c0', 'BASE_COLOR': 'rgb(212, 212, 212)', 'LOG_COLOR': 'rgb(212, 212, 212)', OBJECT_VALUE_UNDEFINED_COLOR: '#a1a1a1', OBJECT_VALUE_NUMBER_COLOR: 'rgb(181, 206, 168)'}}/>
       </div>
     </div>

@@ -1,0 +1,1 @@
+declare function prompt(message:? string, _default?: string): string;
