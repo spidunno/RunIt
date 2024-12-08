@@ -51,7 +51,7 @@ export const setupEditor: NonNullable<React.ComponentProps<typeof Editor>['onMou
     module: monaco.languages.typescript.ModuleKind.ESNext,
     // module: monaco.languages.typescript.ModuleKind.ES2015,
 		// noEmit: true,
-    target: monaco.languages.typescript.ScriptTarget.ES2021,
+    target: monaco.languages.typescript.ScriptTarget.ES2020,
 		noLib: true,
 		moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
 		// typeRoots: ["node_modules/@types"]
